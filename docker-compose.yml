@@ -3,7 +3,7 @@ version: '3.8'
 services:
   rabbitmq:
     image: rabbitmq:3.13-management  # Includes management plugin
-    container_name: rabbitmq
+    container_name: rabbitmq-orchestrator
     hostname: rabbitmq
     restart: unless-stopped
     ports:
@@ -25,7 +25,7 @@ services:
 
   firecrawl:
     image: node:18-alpine
-    container_name: firecrawl
+    container_name: firecrawl-orchestrator
     command: npx -y firecrawl-mcp
     restart: unless-stopped
     ports:
@@ -46,7 +46,7 @@ services:
     build:
       context: ./tweets-notifier
       dockerfile: Dockerfile
-    container_name: tweets-notifier
+    container_name: tweets-notifier-orchestrator
     depends_on:
       rabbitmq:
         condition: service_healthy
