@@ -1,0 +1,6 @@
+[submodule "tweets-notifier"]
+	path = tweets-notifier
+	url = git@github.com:alexsanya/tweets-notifier.git
+[submodule "sentiment-analyser"]
+	path = sentiment-analyser
+	url = git@github.com:alexsanya/sentiment-analyser.git
