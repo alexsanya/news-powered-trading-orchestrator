@@ -1,5 +1,7 @@
 # Full System Orchestrator
 
+![Cover picture](diagram.png)
+
 A multi-service cryptocurrency monitoring and trading signal generation system that processes real-time Twitter streams through AI-powered sentiment analysis to detect token announcements and generate trading signals.
 
 ## Architecture
