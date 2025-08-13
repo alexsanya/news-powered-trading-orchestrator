@@ -105,7 +105,7 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
       RABBITMQ_QUEUE: ${RABBITMQ_QUEUE:-tweet_events}
-      RABBITMQ_CONSUME_QUEUE: ${RABBITMQ_CONSUME_QUEUE:-tweet_events}
+      RABBITMQ_CONSUME_QUEUE: ${SENTIMENT_ANALYZER_CONSUME_QUEUE:-tweet_events}
       ACTIONS_QUEUE_NAME: ${ACTIONS_QUEUE_NAME:-actions_to_take}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-admin}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-changeme}
@@ -133,6 +133,51 @@ services:
       LOGFIRE_SERVICE_NAME: ${LOGFIRE_SERVICE_NAME:-sentiment-analyser}
       LOGFIRE_ENVIRONMENT: ${LOGFIRE_ENVIRONMENT:-${ENVIRONMENT:-development}}
       SERVICE_VERSION: ${SERVICE_VERSION:-0.1.0}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - trading_network
+
+  action-taker:
+    build:
+      context: ./action-taker
+      dockerfile: Dockerfile
+    container_name: action-taker
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./action-taker/logs:/app/logs  # Mount logs directory for persistence
+      - ./action-taker/action_taker_session.session:/app/action_taker_session.session  # Mount Telegram session file
+    environment:
+      # Application Environment
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      
+      # RabbitMQ Configuration - Use service name for internal communication
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+      RABBITMQ_QUEUE: ${RABBITMQ_QUEUE:-tweet_events}
+      RABBITMQ_CONSUME_QUEUE: ${ACTION_TAKER_CONSUME_QUEUE:-tweet_events}
+      ACTIONS_QUEUE_NAME: ${ACTIONS_QUEUE_NAME:-actions_to_take}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-changeme}
+      
+      # RabbitMQ Connection Monitoring
+      RABBITMQ_MONITOR_ENABLED: ${RABBITMQ_MONITOR_ENABLED:-true}
+      RABBITMQ_MONITOR_INTERVAL: ${RABBITMQ_MONITOR_INTERVAL:-30}
+      RABBITMQ_MAX_RETRY_ATTEMPTS: ${RABBITMQ_MAX_RETRY_ATTEMPTS:-3}
+      RABBITMQ_RETRY_DELAY: ${RABBITMQ_RETRY_DELAY:-5}
+      
+      # Telegram Configuration
+      TG_APP_ID: ${TG_APP_ID}
+      TG_APP_HASH: ${TG_APP_HASH}
+      TG_TARGET_CHANNEL: ${TG_TARGET_CHANNEL}
+      
     healthcheck:
       test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
       interval: 30s
