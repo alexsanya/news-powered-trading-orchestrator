@@ -4,3 +4,6 @@
 [submodule "sentiment-analyser"]
 	path = sentiment-analyser
 	url = git@github.com:alexsanya/sentiment-analyser.git
+[submodule "action-taker"]
+	path = action-taker
+	url = git@github.com:alexsanya/action-taker.git
