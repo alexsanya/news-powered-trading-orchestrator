@@ -126,6 +126,10 @@ services:
       FIRECRAWL_MCP_SERVER_URL: http://firecrawl:3000/sse
       MAX_CONCURRENT_ANALYSIS: ${MAX_CONCURRENT_ANALYSIS:-5}
       AGENT_RETRIES: ${AGENT_RETRIES:-4}
+
+   
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      TOKEN_DETECTION_ENABLED: ${TOKEN_DETECTION_ENABLED}
       
       # Logfire Configuration
       LOGFIRE_ENABLED: ${LOGFIRE_ENABLED:-true}
@@ -177,6 +181,13 @@ services:
       TG_APP_ID: ${TG_APP_ID}
       TG_APP_HASH: ${TG_APP_HASH}
       TG_TARGET_CHANNEL: ${TG_TARGET_CHANNEL}
+
+
+      BYBIT_API_KEY: ${BYBIT_API_KEY}
+      BYBIT_API_SECRET: ${BYBIT_API_SECRET}
+      BYBYT_IS_TESTNET: $BYBYT_IS_TESTNET}
+
+      NOTIFICATIONS_CHANNEL_ID: ${NOTIFICATIONS_CHANNEL_ID}
       
     healthcheck:
       test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
