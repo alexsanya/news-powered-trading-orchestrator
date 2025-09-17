@@ -121,6 +121,7 @@ services:
       MESSAGE_BUFFER_SIZE: ${MESSAGE_BUFFER_SIZE:-10}
       
       # Sentiment Analysis Configuration
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       SENTIMENT_MODEL_NAME: ${SENTIMENT_MODEL_NAME:-openai:gpt-4o}
       FIRECRAWL_MCP_SERVER_URL: http://firecrawl:3000/sse
@@ -130,6 +131,7 @@ services:
    
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
       TOKEN_DETECTION_ENABLED: ${TOKEN_DETECTION_ENABLED}
+      FED_ANALYSIS_ENABLED: ${FED_ANALYSIS_ENABLED}
       
       # Logfire Configuration
       LOGFIRE_ENABLED: ${LOGFIRE_ENABLED:-true}
